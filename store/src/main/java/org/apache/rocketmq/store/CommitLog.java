@@ -1534,13 +1534,13 @@ public class CommitLog {
             // 4 QUEUEID
             this.msgStoreItemMemory.putInt(msgInner.getQueueId()); // 消息队列ID
             // 5 FLAG
-            this.msgStoreItemMemory.putInt(msgInner.getFlag()); //﻿标记位
+            this.msgStoreItemMemory.putInt(msgInner.getFlag()); // 标记位
             // 6 QUEUEOFFSET
-            //﻿这是个自增值，不是真正的 consumeQueue 的偏移量（真正的 consumeQueue 的偏移量为 queueOffset * CQ_STORE_UNIT_SIZE），
+            // 这是个自增值，不是真正的 consumeQueue 的偏移量（真正的 consumeQueue 的偏移量为 queueOffset * CQ_STORE_UNIT_SIZE），
             // 可以代表这个 consumeQueue 或者 tranStateTable 队列中消息的个数。
             this.msgStoreItemMemory.putLong(queueOffset);
             // 7 PHYSICALOFFSET
-            this.msgStoreItemMemory.putLong(fileFromOffset + byteBuffer.position()); //﻿消息写入的物理偏移量（CommitLog文件（对应一个MappedFile）对应的起始偏移量 + 当前映射文件的写位置）
+            this.msgStoreItemMemory.putLong(fileFromOffset + byteBuffer.position()); // 消息写入的物理偏移量（CommitLog文件（对应一个MappedFile）对应的起始偏移量 + 当前映射文件的写位置）
             // 8 SYSFLAG
             /*
                 指明消息是否是事务消息，以及事务状态等消息特征，二进制表示形式为四个字节，
@@ -1560,23 +1560,23 @@ public class CommitLog {
             this.resetByteBuffer(hostHolder, 8);
             this.msgStoreItemMemory.put(msgInner.getBornHostBytes(hostHolder)); // 客户端地址，前4字节为host，后4字节为port
             // 11 STORETIMESTAMP
-            this.msgStoreItemMemory.putLong(msgInner.getStoreTimestamp()); //﻿消息在broker存储的时间戳
+            this.msgStoreItemMemory.putLong(msgInner.getStoreTimestamp()); // 消息在broker存储的时间戳
             // 12 STOREHOSTADDRESS
             this.resetByteBuffer(hostHolder, 8);
-            this.msgStoreItemMemory.put(msgInner.getStoreHostBytes(hostHolder)); //﻿存储在broker的地址，前4字节为host，后4字节为port
+            this.msgStoreItemMemory.put(msgInner.getStoreHostBytes(hostHolder)); // 存储在broker的地址，前4字节为host，后4字节为port
             // 13 RECONSUMETIMES
-            this.msgStoreItemMemory.putInt(msgInner.getReconsumeTimes()); //﻿消息被某个订阅组重新消费了几次（订阅组之间独立计数），因为重试消息发送到了topic为%retry%groupName、queueId=0的队列中去了，成功消费一次记录为0；
+            this.msgStoreItemMemory.putInt(msgInner.getReconsumeTimes()); // 消息被某个订阅组重新消费了几次（订阅组之间独立计数），因为重试消息发送到了topic为%retry%groupName、queueId=0的队列中去了，成功消费一次记录为0；
             // 14 Prepared Transaction Offset
             this.msgStoreItemMemory.putLong(msgInner.getPreparedTransactionOffset()); // 表示是prepared状态的事务消息
             // 15 BODY
-            this.msgStoreItemMemory.putInt(bodyLength); //﻿消息体大小
+            this.msgStoreItemMemory.putInt(bodyLength); // 消息体大小
             if (bodyLength > 0)
                 this.msgStoreItemMemory.put(msgInner.getBody()); // 消息体内容
             // 16 TOPIC
             this.msgStoreItemMemory.put((byte) topicLength); // topic大小
             this.msgStoreItemMemory.put(topicData); // topic内容
             // 17 PROPERTIES
-            this.msgStoreItemMemory.putShort((short) propertiesLength); //﻿消息属性大小
+            this.msgStoreItemMemory.putShort((short) propertiesLength); // 消息属性大小
             if (propertiesLength > 0)
                 this.msgStoreItemMemory.put(propertiesData); // 消息属性内容
 
